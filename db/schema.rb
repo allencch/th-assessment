@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 2021_04_28_161733) do
     t.integer "week_modifier"
     t.time "time_start"
     t.time "time_end"
+    t.datetime "recurrent_start"
+    t.datetime "recurrent_end"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_availabilities_on_user_id"

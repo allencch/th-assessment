@@ -12,6 +12,8 @@ class CreateAvailabilities < ActiveRecord::Migration[6.1]
       t.integer :week_modifier
       t.time :time_start
       t.time :time_end
+      t.datetime :recurrent_start
+      t.datetime :recurrent_end
 
       t.timestamps
     end
