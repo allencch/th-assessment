@@ -1,0 +1,2 @@
+class RecurrentAvailability < Availability
+end

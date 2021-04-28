@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_28_153910) do
+ActiveRecord::Schema.define(version: 2021_04_28_161733) do
+
+  create_table "availabilities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "type"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.boolean "whole_day", default: true
+    t.string "repeat_type", default: "no_repeat"
+    t.integer "day"
+    t.integer "week_day"
+    t.integer "ordinal_modifier"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_availabilities_on_user_id"
+  end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
@@ -19,4 +34,5 @@ ActiveRecord::Schema.define(version: 2021_04_28_153910) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "availabilities", "users"
 end

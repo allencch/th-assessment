@@ -1,0 +1,2 @@
+class OneoffAvailability < Availability
+end
