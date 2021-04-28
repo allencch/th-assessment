@@ -11,5 +11,6 @@ describe AvailabilityService do
 
     availability = user.recurrent_availabilities.first
     expect(availability.week_day).to eq(1)
+    expect(availability.recurrent_start).to be_truthy
   end
 end
