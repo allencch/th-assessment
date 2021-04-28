@@ -23,4 +23,17 @@ module AvailabilityService
       recurrent_end: recurrent_end
     )
   end
+
+  def self.create_oneoff_availability(
+        user,
+        start_at: nil,
+        end_at: nil,
+        whole_day: false
+      )
+    user.oneoff_availabilities.create(
+      start_at: start_at || Time.now,
+      end_at: end_at || Time.now + 2.hours,
+      whole_day: whole_day
+    )
+  end
 end
