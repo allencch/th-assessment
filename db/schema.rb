@@ -17,11 +17,13 @@ ActiveRecord::Schema.define(version: 2021_04_28_161733) do
     t.string "type"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.boolean "whole_day", default: true
     t.string "repeat_type", default: "no_repeat"
+    t.boolean "whole_day", default: true
     t.integer "day"
     t.integer "week_day"
-    t.integer "ordinal_modifier"
+    t.integer "week_modifier"
+    t.time "time_start"
+    t.time "time_end"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_availabilities_on_user_id"

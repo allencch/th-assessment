@@ -5,11 +5,13 @@ class CreateAvailabilities < ActiveRecord::Migration[6.1]
       t.string :type
       t.datetime :start_at
       t.datetime :end_at
-      t.boolean :whole_day, default: true
       t.string :repeat_type, default: :no_repeat
+      t.boolean :whole_day, default: true
       t.integer :day
       t.integer :week_day
-      t.integer :ordinal_modifier
+      t.integer :week_modifier
+      t.time :time_start
+      t.time :time_end
 
       t.timestamps
     end
