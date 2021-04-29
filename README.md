@@ -22,3 +22,22 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+# Availability Model
+
+Availability can be specified into OneoffAvailabity and RecurrentAvailability.
+
+OneoffAvailability main attributes are
+
+* start_at
+* end_at
+
+RecurrentAvailability main attributes are
+
+* repeat_type - weekly, monthly, yearly?
+* whole_day
+* day - day of the month
+* week_day - day of the week
+* week_modifier - ordinal of the week, eg 1st, 2nd, 3rd, ... . Use together with repeat_type
+* time_start - if not whole day
+* time_end - if not whole day
