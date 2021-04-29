@@ -51,6 +51,7 @@ module AvailabilityService
 
   def self.recurrent_availabilities(user, datetime)
     # TODO: Refactor to availability scope
+    # TODO: Add more OR operations for different combinations
     user.recurrent_availabilities
       .where(
         '(repeat_type = "weekly" AND week_day + 1 = DAYOFWEEK(:datetime))

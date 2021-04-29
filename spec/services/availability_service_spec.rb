@@ -44,6 +44,37 @@ describe AvailabilityService do
       result = AvailabilityService.available?(user, Time.zone.parse('2021-04-01'))
       expect(result).to eq(false)
     end
+
+    it 'checks availability for sepcific days' do
+      AvailabilityService.create_oneoff_availability(
+        user,
+        start_at: Time.zone.parse('2021-01-05'),
+        end_at: Time.zone.parse('2021-01-05').end_of_day
+      )
+      AvailabilityService.create_oneoff_availability(
+        user,
+        start_at: Time.zone.parse('2021-02-06'),
+        end_at: Time.zone.parse('2021-02-06').end_of_day
+      )
+      AvailabilityService.create_oneoff_availability(
+        user,
+        start_at: Time.zone.parse('2021-03-15'),
+        end_at: Time.zone.parse('2021-03-15').end_of_day
+      )
+
+      result = AvailabilityService.available?(user, Time.zone.parse('2021-01-05'))
+      expect(result).to eq(true)
+      result = AvailabilityService.available?(user, Time.zone.parse('2021-01-04'))
+      expect(result).to eq(false)
+      result = AvailabilityService.available?(user, Time.zone.parse('2021-02-06'))
+      expect(result).to eq(true)
+      result = AvailabilityService.available?(user, Time.zone.parse('2021-02-07'))
+      expect(result).to eq(false)
+      result = AvailabilityService.available?(user, Time.zone.parse('2021-03-15'))
+      expect(result).to eq(true)
+      result = AvailabilityService.available?(user, Time.zone.parse('2021-03-16'))
+      expect(result).to eq(false)
+    end
   end
 
   describe 'Check recurrent availability' do
