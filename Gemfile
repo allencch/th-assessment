@@ -34,6 +34,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 5.0.0'
   gem 'rexml', '~> 3.2.4' # required https://github.com/CocoaPods/CocoaPods/issues/10388
   gem 'dotenv-rails'
+  gem 'pry-rails'
+  gem 'pry-byebug'
 end
 
 group :development do
