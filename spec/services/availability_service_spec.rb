@@ -129,4 +129,29 @@ describe AvailabilityService do
       expect(result).to eq(true)
     end
   end
+
+  describe 'find users by availabilities' do
+    let(:user2) { create :user }
+
+    it 'finds availabilities' do
+      AvailabilityService.create_oneoff_availability(
+        user,
+        start_at: Time.zone.parse('2021-04-05'),
+        end_at: Time.zone.parse('2021-04-05').end_of_day
+      )
+      AvailabilityService.create_recurrent_availability(
+        user2,
+        week_day: 1
+      )
+
+      result = AvailabilityService.find_availabilities(Time.zone.parse('2021-04-05'))
+      expect(result.length).to eq(2)
+
+      result = AvailabilityService.find_availabilities(Time.zone.parse('2021-04-06'))
+      expect(result.length).to eq(0)
+
+      result = AvailabilityService.find_availabilities(Time.zone.parse('2021-04-12'))
+      expect(result.length).to eq(1)
+    end
+  end
 end

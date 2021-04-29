@@ -36,12 +36,43 @@ module AvailabilityService
   end
 
   def self.available?(user, datetime)
-    !oneoff_availabilities(user, datetime).empty? ||
-      !recurrent_availabilities(user, datetime).empty?
+    !oneoff_availabilities(datetime)
+      .where(user_id: user.id)
+      .empty? ||
+      !recurrent_availabilities(datetime)
+        .where(user_id: user.id)
+        .empty?
   end
 
-  def self.oneoff_availabilities(user, datetime)
-    user.oneoff_availabilities
+  def self.find_availabilities(datetime)
+    # TODO: Refactor with Oneoff and Recurrent
+    Availability
+      .where(
+        '(type = "OneoffAvailability"
+          AND start_at <= :datetime
+          AND (end_at IS NULL OR end_at >= :datetime))
+         OR
+         (type = "RecurrentAvailability"
+          AND (
+            (repeat_type = "weekly" AND week_day + 1 = DAYOFWEEK(:datetime))
+            OR
+            (repeat_type = "monthly"
+               AND week_day + 1 = DAYOFWEEK(:datetime)
+               AND (
+                 IF(week_modifier IS NOT NULL,
+                   FLOOR((DAYOFMONTH(:datetime) - 1) / 7) + 1 = week_modifier,
+                   1
+                 )
+               )
+             )
+           )
+         )',
+        datetime: datetime
+      )
+  end
+
+  def self.oneoff_availabilities(datetime)
+    OneoffAvailability
       .where(
         'start_at <= :datetime
           AND (end_at IS NULL OR end_at >= :datetime)',
@@ -49,10 +80,10 @@ module AvailabilityService
       )
   end
 
-  def self.recurrent_availabilities(user, datetime)
+  def self.recurrent_availabilities(datetime)
     # TODO: Refactor to availability scope
     # TODO: Add more OR operations for different combinations
-    user.recurrent_availabilities
+    RecurrentAvailability
       .where(
         '(repeat_type = "weekly" AND week_day + 1 = DAYOFWEEK(:datetime))
          OR
