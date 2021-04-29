@@ -1,27 +1,26 @@
-# README
+# Initial Setup
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Ruby version 3.0.1. Recommend to use `rvm`.
 
-Things you may want to cover:
+Run
 
-* Ruby version
+```
+gem install bundler
+bundle install
+```
 
-* System dependencies
+## Database
 
-* Configuration
+This project uses MySQL. MySQL configuration can be set using `.env`.
+Refer to `.env.sample`.
 
-* Database creation
 
-* Database initialization
+# Run Test
 
-* How to run the test suite
+```
+rspec
+```
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
 
 # Availability Model
 
