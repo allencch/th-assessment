@@ -27,13 +27,44 @@ module AvailabilityService
   def self.create_oneoff_availability(
         user,
         start_at: nil,
-        end_at: nil,
-        whole_day: false
+        end_at: nil
       )
     user.oneoff_availabilities.create(
       start_at: start_at || Time.now,
-      end_at: end_at || Time.now + 2.hours,
-      whole_day: whole_day
+      end_at: end_at || Time.now + 2.hours
     )
+  end
+
+  def self.available?(user, datetime)
+    !oneoff_availabilities(user, datetime).empty? ||
+      !recurrent_availabilities(user, datetime).empty?
+  end
+
+  def self.oneoff_availabilities(user, datetime)
+    user.oneoff_availabilities
+      .where(
+        'start_at <= :datetime
+          AND (end_at IS NULL OR end_at >= :datetime)',
+        datetime: datetime
+      )
+  end
+
+  def self.recurrent_availabilities(user, datetime)
+    # TODO: Refactor to availability scope
+    user.recurrent_availabilities
+      .where(
+        '(repeat_type = "weekly" AND week_day + 1 = DAYOFWEEK(:datetime))
+         OR
+         (repeat_type = "monthly"
+            AND week_day + 1 = DAYOFWEEK(:datetime)
+            AND (
+              IF(week_modifier IS NOT NULL,
+                FLOOR((DAYOFMONTH(:datetime) - 1) / 7) + 1 = week_modifier,
+                1
+              )
+            )
+         )',
+        datetime: datetime
+      )
   end
 end
